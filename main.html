@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cake</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .birthday-text {
+      position: absolute;
+      top: 20%;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 2.5em;
+      color: #ff6b6b;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+      font-family: 'Arial', sans-serif;
+      text-align: center;
+      animation: bounce 2s infinite;
+    }
+
+    .instruction {
+      position: absolute;
+      bottom: 20%;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 1.2em;
+      color: #4a4a4a;
+      text-align: center;
+      background-color: rgba(255,255,255,0.8);
+      padding: 10px 20px;
+      border-radius: 10px;
+      opacity: 0;
+      transition: opacity 0.5s ease-in;
+    }
+
+    .instruction.show {
+      opacity: 1;
+    }
+
+    .envelope {
+      position: absolute;
+      bottom: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 60px;
+      background-color: #ff6b6b;
+      border-radius: 5px;
+      cursor: pointer;
+      opacity: 0;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+
+    .envelope:before {
+      content: '';
+      position: absolute;
+      top: -30px;
+      left: 0;
+      width: 0;
+      height: 0;
+      border-left: 50px solid transparent;
+      border-right: 50px solid transparent;
+      border-bottom: 30px solid #ff6b6b;
+    }
+
+    .envelope:after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #fff;
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 0 0, 50% 50%);
+      transform: scale(0.8);
+      transition: transform 0.3s ease;
+    }
+
+    .envelope:hover {
+      transform: translateX(-50%) scale(1.05);
+    }
+
+    .envelope:hover:after {
+      transform: scale(0.9);
+    }
+
+    .envelope.show {
+      opacity: 1;
+    }
+
+    .message-popup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .message-content {
+      background-color: white;
+      padding: 30px;
+      border-radius: 15px;
+      max-width: 600px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+      position: relative;
+      animation: fadeIn 0.5s ease;
+    }
+
+    .message-content p {
+      margin: 15px 0;
+      line-height: 1.6;
+      color: #333;
+      font-size: 1.1em;
+    }
+
+    .close-button {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: none;
+      border: none;
+      font-size: 1.5em;
+      cursor: pointer;
+      color: #666;
+      transition: color 0.3s ease;
+    }
+
+    .close-button:hover {
+      color: #ff6b6b;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(-10px); }
+    }
+
+    .heart {
+      color: #ff6b6b;
+      font-size: 1.2em;
+      margin: 0 5px;
+    }
+
+    .headset-popup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.9);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+    }
+
+    .headset-content {
+      background-color: white;
+      padding: 30px;
+      border-radius: 15px;
+      max-width: 400px;
+      width: 90%;
+      text-align: center;
+      animation: fadeIn 0.5s ease;
+    }
+
+    .headset-content p {
+      font-size: 1.2em;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .headset-button {
+      background-color: #ff6b6b;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 25px;
+      font-size: 1.1em;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .headset-button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+    }
+  </style>
+</head>
+<body>
+  <div class="headset-popup">
+    <div class="headset-content">
+      <p>🎧 Wear a headset for better experience</p>
+      <button class="headset-button">Got it!</button>
+    </div>
+  </div>
+
+  <div class="birthday-text">Happy Birthday!</div>
+  <div class="instruction">Blow in the Speaker after the Singing Part to see the Magic</div>
+  
+  <div class="envelope"></div>
+
+  <div class="message-popup">
+    <div class="message-content">
+      <button class="close-button">×</button>
+      <p>Dear My Puumpkiin,</p>
+      <p>I hope this letter finds you smiling. I've been thinking about you all day like I always do. Tonight, I looked up at the moon, and it was shining so bright. It made me think of the time that we we're having our first overnight at the sea, watching the sky together. You'd rest your head on my shoulder, and we wouldn't even have to say a word. Just being there with you was enough.</p>
+      <p>Out here, the world keeps moving the stars still shine, people still laugh but nothing feels quite right without you. I miss your voice, your hugs, the way your hand fits perfectly in mine. Every quiet moment makes me wish you were here to share it.</p>
+      <p>I try to keep my head up, to stay strong. But some nights, the silence weighs heavy. I smile, but deep down, I just miss you. A little more each day.</p>
+      <p>You'll always be the brightest part of my sky, Dolores. No matter how far I am, I carry you with me — always.</p>
+      <p>Love,<br>Mak-mak</p>
+    </div>
+  </div>
+
+  <div class="box-canvas">
+    <div class="plate"></div>
+    <div class="cake-side"></div>
+    <div class="drips">
+      <div class="drip"></div>
+      <div class="drip"></div>
+      <div class="drip"></div>
+      <div class="drip"></div>
+      <div class="drip"></div>
+      <div class="drip"></div>
+      <div class="drip"></div>
+      <div class="drip"></div>
+    </div>
+    <div class="cake-top"></div>
+    <div class="candle">
+      <div class="flame"></div>
+    </div>
+  </div>
+
+  <audio id="message" src="message.mp3"></audio>
+  <audio id="birthday-song" src="birthday song.mp3"></audio>
+  <audio id="last-message" src="sad.mp3"></audio>
+
+  <script>
+    // Headset popup functionality
+    const headsetPopup = document.querySelector('.headset-popup');
+    const headsetButton = document.querySelector('.headset-button');
+    const birthdaySong = document.getElementById('birthday-song');
+    const lastMessage = document.getElementById('last-message');
+
+    headsetButton.addEventListener('click', () => {
+      headsetPopup.style.display = 'none';
+      // Play birthday song after closing headset message
+      birthdaySong.play();
+    });
+
+    async function detectBlow() {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      const mic = audioContext.createMediaStreamSource(stream);
+      const analyser = audioContext.createAnalyser();
+      const dataArray = new Uint8Array(analyser.fftSize);
+
+      mic.connect(analyser);
+
+      let hasBlown = false;
+
+      function checkVolume() {
+        analyser.getByteTimeDomainData(dataArray);
+
+        let sum = 0;
+        for (let i = 0; i < dataArray.length; i++) {
+          let value = dataArray[i] - 128;
+          sum += value * value;
+        }
+        let volume = Math.sqrt(sum / dataArray.length);
+
+        if (volume > 20 && !hasBlown) {
+          hasBlown = true;
+
+          const flame = document.querySelector('.flame');
+          if (flame && !flame.classList.contains('blow-out')) {
+            flame.classList.add('blow-out');
+          }
+
+          const audio = document.getElementById('message');
+          if (audio) {
+            audio.play();
+          }
+
+          // Show envelope after candle is blown out
+          setTimeout(() => {
+            document.querySelector('.envelope').classList.add('show');
+          }, 2000);
+        }
+
+        requestAnimationFrame(checkVolume);
+      }
+
+      checkVolume();
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      detectBlow();
+      // Show instruction after a short delay
+      setTimeout(() => {
+        document.querySelector('.instruction').classList.add('show');
+      }, 1000);
+    });
+
+    // Message popup functionality
+    const envelope = document.querySelector('.envelope');
+    const messagePopup = document.querySelector('.message-popup');
+    const closeButton = document.querySelector('.close-button');
+
+    envelope.addEventListener('click', () => {
+      messagePopup.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+      // Play last message when envelope is opened
+      lastMessage.play();
+    });
+
+    closeButton.addEventListener('click', () => {
+      messagePopup.style.display = 'none';
+      document.body.style.overflow = 'auto';
+    });
+
+    messagePopup.addEventListener('click', (e) => {
+      if (e.target === messagePopup) {
+        messagePopup.style.display = 'none';
+        document.body.style.overflow = 'auto';
+      }
+    });
+  </script>
+</body>
+</html>
